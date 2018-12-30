@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   window.ctx = ctx;
   window.saveDrawing = saveDrawing;
   window.loadDrawing = loadDrawing;
+  window.compressData = compressData;
+  window.decompressData = decompressData;
   document.addEventListener("mousedown", e => {
     mouseIsDown = true;
     beginDraw(e, ctx);
@@ -44,16 +46,66 @@ function executeDraw(event, ctx) {
   ctx.stroke();
 }
 
+// data is too big to save to local storage
 function saveDrawing(saveName, ctx) {
   const canvas = document.getElementById("canvas");
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   const data = ctx.getImageData(0, 0, width, height);
-  data.data = Array.from(data.data);
-  window.localStorage.setItem(saveName, JSON.stringify(data));
+  const compressedData = compressData(data);
+  window.localStorage.setItem(saveName, compressedData);
 }
 
 function loadDrawing(saveName, ctx) {
-  const data = JSON.parse(window.localStorage.getItem(saveName));
-  ctx.putImageData(data, 0, 0);
+  const decompressedData = decompressData(
+    window.localStorage.getItem(saveName)
+  );
+  const newImageData = new ImageData(
+    decompressedData.data,
+    decompressedData.width,
+    decompressedData.height
+  );
+  ctx.putImageData(newImageData, 0, 0);
+}
+
+function compressData(data) {
+  const imageData = data.data;
+  const pixelMap = new Array();
+  let i = 0;
+  while (i < imageData.length) {
+    let allZero = true;
+    let pixelData = new Array();
+    for (let j = 0; j < 4; j++) {
+      pixelData.push(imageData[i]);
+      if (imageData[i]) allZero = false;
+      i++;
+    }
+    if (allZero) {
+      pixelMap.push(0);
+    } else {
+      pixelMap.push(pixelData);
+    }
+  }
+  const compressedData = {
+    data: pixelMap,
+    height: data.height,
+    width: data.width
+  };
+  return JSON.stringify(compressedData);
+}
+
+function decompressData(data) {
+  data = JSON.parse(data);
+  const imageData = new Array();
+  for (let i in data.data) {
+    if (data.data[i]) {
+      data.data[i].forEach(el => imageData.push(el));
+    } else {
+      for (let i = 0; i < 4; i++) {
+        imageData.push(0);
+      }
+    }
+  }
+  data.data = Uint8ClampedArray.from(imageData);
+  return data;
 }
