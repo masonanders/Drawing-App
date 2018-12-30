@@ -99,7 +99,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const ctx = canvas.getContext("2d");
 
   let mouseIsDown = false;
-
+  window.ctx = ctx;
+  window.saveDrawing = saveDrawing;
+  window.loadDrawing = loadDrawing;
   document.addEventListener("mousedown", e => {
     mouseIsDown = true;
     beginDraw(e, ctx);
@@ -135,6 +137,20 @@ function executeDraw(event, ctx) {
   const { clientX, clientY } = event;
   ctx.lineTo(clientX, clientY);
   ctx.stroke();
+}
+
+function saveDrawing(saveName, ctx) {
+  const canvas = document.getElementById("canvas");
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  const data = ctx.getImageData(0, 0, width, height);
+  data.data = Array.from(data.data);
+  window.localStorage.setItem(saveName, JSON.stringify(data));
+}
+
+function loadDrawing(saveName, ctx) {
+  const data = JSON.parse(window.localStorage.getItem(saveName));
+  ctx.putImageData(data, 0, 0);
 }
 
 
