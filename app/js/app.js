@@ -68,6 +68,7 @@ function loadDrawing(saveName, ctx) {
   ctx.putImageData(newImageData, 0, 0);
 }
 
+// compress 0s in groups of 8
 function compressData(data) {
   const imageData = data.data;
   const pixelMap = new Array();
