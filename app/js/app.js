@@ -88,8 +88,24 @@ function compressData(data) {
       pixelMap.push(pixelData);
     }
   }
+  const compressedPixelMap = [];
+  let numZeros = 0;
+  for (let i in pixelMap) {
+    if (pixelMap[i] === 0) {
+      numZeros++;
+    } else {
+      if (numZeros > 0) {
+        compressedPixelMap.push(numZeros);
+      }
+      compressedPixelMap.push(pixelMap[i]);
+      numZeros = 0;
+    }
+  }
+  if (numZeros > 0) {
+    compressedPixelMap.push(numZeros);
+  }
   const compressedData = {
-    data: pixelMap,
+    data: compressedPixelMap,
     height: data.height,
     width: data.width
   };
