@@ -162,7 +162,7 @@ function loadDrawing(saveName, ctx) {
   ctx.putImageData(newImageData, 0, 0);
 }
 
-// compress further by grouping pixels;
+// compress further by recursively grouping pixels;
 function compressData(data) {
   const imageData = data.data;
   const pixelMap = new Array();
