@@ -163,7 +163,8 @@ function loadDrawing(saveName, ctx) {
   ctx.putImageData(newImageData, 0, 0);
 }
 
-// compress 0s in groups of 8
+// compress pixels into 0s and arrays, then iterate and represent consecutive groups of 0s by
+// a number equal to the number of consecutive 0s
 function compressData(data) {
   const imageData = data.data;
   const pixelMap = new Array();
@@ -171,7 +172,7 @@ function compressData(data) {
   while (i < imageData.length) {
     let allZero = true;
     let pixelData = new Array();
-    for (let j = 0; j < 8; j++) {
+    for (let j = 0; j < 4; j++) {
       pixelData.push(imageData[i]);
       if (imageData[i]) allZero = false;
       i++;
@@ -197,7 +198,7 @@ function decompressData(data) {
     if (data.data[i]) {
       data.data[i].forEach(el => imageData.push(el));
     } else {
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 4; i++) {
         imageData.push(0);
       }
     }
