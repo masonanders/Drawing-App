@@ -141,13 +141,12 @@ function executeDraw(event, ctx) {
   ctx.stroke();
 }
 
-// data is too big to save to local storage
 function saveDrawing(saveName, ctx) {
   const canvas = document.getElementById("canvas");
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   const data = ctx.getImageData(0, 0, width, height);
-  const compressedData = compressData(data);
+  const compressedData = JSON.stringify(compressData(data));
   window.localStorage.setItem(saveName, compressedData);
 }
 
@@ -163,8 +162,6 @@ function loadDrawing(saveName, ctx) {
   ctx.putImageData(newImageData, 0, 0);
 }
 
-// compress pixels into 0s and arrays, then iterate and represent consecutive groups of 0s by
-// a number equal to the number of consecutive 0s
 function compressData(data) {
   const imageData = data.data;
   const pixelMap = new Array();
@@ -204,7 +201,10 @@ function compressData(data) {
     height: data.height,
     width: data.width
   };
-  return JSON.stringify(compressedData);
+  if (data.data.length !== compressedData.data.length) {
+    compressedData = compressData(compressedData);
+  }
+  return compressedData;
 }
 
 function decompressData(data) {
