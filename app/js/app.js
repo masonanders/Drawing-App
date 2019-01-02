@@ -75,7 +75,7 @@ function compressData(data) {
   while (i < imageData.length) {
     let allZero = true;
     let pixelData = new Array();
-    for (let j = 0; j < 4; j++) {
+    for (let j = 0; j < 8; j++) {
       pixelData.push(imageData[i]);
       if (imageData[i]) allZero = false;
       i++;
@@ -101,7 +101,7 @@ function decompressData(data) {
     if (data.data[i]) {
       data.data[i].forEach(el => imageData.push(el));
     } else {
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 8; i++) {
         imageData.push(0);
       }
     }
