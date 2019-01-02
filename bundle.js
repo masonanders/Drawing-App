@@ -141,13 +141,12 @@ function executeDraw(event, ctx) {
   ctx.stroke();
 }
 
-// data is too big to save to local storage
 function saveDrawing(saveName, ctx) {
   const canvas = document.getElementById("canvas");
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   const data = ctx.getImageData(0, 0, width, height);
-  const compressedData = compressData(data);
+  const compressedData = JSON.stringify(compressData(data));
   window.localStorage.setItem(saveName, compressedData);
 }
 
@@ -163,6 +162,7 @@ function loadDrawing(saveName, ctx) {
   ctx.putImageData(newImageData, 0, 0);
 }
 
+// compress further by recursively grouping pixels;
 function compressData(data) {
   const imageData = data.data;
   const pixelMap = new Array();
@@ -181,12 +181,15 @@ function compressData(data) {
       pixelMap.push(pixelData);
     }
   }
-  const compressedData = {
+  let compressedData = {
     data: pixelMap,
     height: data.height,
     width: data.width
   };
-  return JSON.stringify(compressedData);
+  if (data.data.length !== compressedData.data.length) {
+    compressedData = compressData(compressedData);
+  }
+  return compressedData;
 }
 
 function decompressData(data) {
