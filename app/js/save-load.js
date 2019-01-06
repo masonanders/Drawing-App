@@ -1,4 +1,4 @@
-function saveDrawing(saveName, ctx) {
+export function saveDrawing(saveName, ctx) {
   const canvas = document.getElementById("canvas");
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
@@ -7,10 +7,9 @@ function saveDrawing(saveName, ctx) {
   window.localStorage.setItem(saveName, compressedData);
 }
 
-function loadDrawing(saveName, ctx) {
-  const decompressedData = decompressData(
-    window.localStorage.getItem(saveName)
-  );
+export function loadDrawing(saveName, ctx) {
+  const data = JSON.parse(window.localStorage.getItem(saveName));
+  const decompressedData = decompressData(data);
   const newImageData = new ImageData(
     decompressedData.data,
     decompressedData.width,
@@ -62,10 +61,9 @@ function compressData(data) {
 }
 
 function decompressData(data) {
-  data = JSON.parse(data);
-  const imageData = new Array();
-  let numZeros = "";
-  let pixelData = "";
+  const imageData = [];
+  let numZeros = "",
+    pixelData = "";
   for (let i in data.data) {
     if (data.data[i] === "[") {
       pixelData += "[";
