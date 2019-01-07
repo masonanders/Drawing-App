@@ -61,32 +61,7 @@ function compressData(data) {
 }
 
 function decompressData(data) {
-  const imageData = [];
-  let numZeros = "",
-    pixelData = "";
-  for (let i in data.data) {
-    if (data.data[i] === "[") {
-      pixelData += "[";
-      if (numZeros) {
-        imageData.push(JSON.parse(numZeros));
-        numZeros = "";
-      }
-      continue;
-    } else if (data.data[i] === "]") {
-      pixelData += "]";
-      imageData.push(JSON.parse(pixelData));
-      pixelData = "";
-      continue;
-    }
-    if (pixelData) {
-      pixelData += data.data[i];
-    } else {
-      numZeros += data.data[i];
-    }
-  }
-  if (numZeros) {
-    imageData.push(JSON.parse(numZeros));
-  }
+  const imageData = fromCompressedStringToArray(data.data);
   data.data = [];
   for (let i in imageData) {
     if (typeof imageData[i] === "object") {
@@ -101,4 +76,31 @@ function decompressData(data) {
   }
   data.data = Uint8ClampedArray.from(data.data);
   return data;
+}
+
+function fromCompressedStringToArray(string) {
+  const imageData = [];
+  let numZeros = "",
+    pixelData = "";
+  for (let i in string) {
+    if (string[i] === "[") {
+      pixelData += "[";
+      if (numZeros) {
+        imageData.push(JSON.parse(numZeros));
+        numZeros = "";
+      }
+    } else if (data.data[i] === "]") {
+      pixelData += "]";
+      imageData.push(JSON.parse(pixelData));
+      pixelData = "";
+    } else if (pixelData) {
+      pixelData += data.data[i];
+    } else {
+      numZeros += data.data[i];
+    }
+  }
+  if (numZeros) {
+    imageData.push(JSON.parse(numZeros));
+  }
+  return imageData;
 }
