@@ -1,3 +1,5 @@
+import { saveDrawing, loadDrawing } from "./save-load";
+
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
   console.assert(resizeCanvas(canvas), "Could not resize canvas element!");
