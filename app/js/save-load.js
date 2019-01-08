@@ -1,14 +1,15 @@
 export function saveDrawing(saveName, ctx) {
   const canvas = document.getElementById("canvas");
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
+  const width = canvas.clientWidth,
+    height = canvas.clientHeight;
   const data = ctx.getImageData(0, 0, width, height);
   const compressedData = JSON.stringify(compressData(data));
   window.localStorage.setItem(saveName, compressedData);
 }
 
 export function loadDrawing(saveName, ctx) {
-  const data = JSON.parse(window.localStorage.getItem(saveName));
+  const dataAsString = window.localStorage.getItem(saveName);
+  const data = JSON.parse(dataAsString);
   const decompressedData = decompressData(data);
   const newImageData = new ImageData(
     decompressedData.data,
@@ -19,12 +20,23 @@ export function loadDrawing(saveName, ctx) {
 }
 
 function compressData(data) {
-  const imageData = data.data;
-  const pixelMap = new Array();
+  const pixelMap = compressEmptyPixels(data.data);
+  const compressedPixelMap = groupZeros(pixelMap);
+  const compPixelMapString = fromArrayToCompressedString(compressedPixelMap);
+  const compressedData = {
+    data: compPixelMapString,
+    height: data.height,
+    width: data.width
+  };
+  return compressedData;
+}
+
+function compressEmptyPixels(imageData) {
+  const pixelMap = [];
   let i = 0;
   while (i < imageData.length) {
-    let allZero = true;
-    let pixelData = new Array();
+    let allZero = true,
+      pixelData = [];
     for (let j = 0; j < 4; j++) {
       pixelData.push(imageData[i]);
       if (imageData[i]) allZero = false;
@@ -36,45 +48,41 @@ function compressData(data) {
       pixelMap.push(pixelData);
     }
   }
-  let compressedPixelMap = "";
+  return pixelMap;
+}
+
+function groupZeros(pixelMap) {
+  const compressedPixelMap = [];
   let numZeros = 0;
   for (let i in pixelMap) {
     if (pixelMap[i] === 0) {
       numZeros++;
     } else {
       if (numZeros > 0) {
-        compressedPixelMap += numZeros;
+        compressedPixelMap.push(numZeros);
+        numZeros = 0;
       }
-      compressedPixelMap += JSON.stringify(pixelMap[i]);
-      numZeros = 0;
+      compressedPixelMap.push(pixelMap[i]);
     }
   }
   if (numZeros > 0) {
-    compressedPixelMap += numZeros;
+    compressedPixelMap.push(numZeros);
   }
-  const compressedData = {
-    data: compressedPixelMap,
-    height: data.height,
-    width: data.width
-  };
-  return compressedData;
+  return compressedPixelMap;
+}
+
+function fromArrayToCompressedString(array) {
+  let compressedString = "";
+  array.forEach(el => {
+    compressedString += JSON.stringify(el);
+  });
+  return compressedString;
 }
 
 function decompressData(data) {
   const imageData = fromCompressedStringToArray(data.data);
-  data.data = [];
-  for (let i in imageData) {
-    if (typeof imageData[i] === "object") {
-      imageData[i].forEach(el => data.data.push(el));
-    } else {
-      for (let j = 0; j < imageData[i]; j++) {
-        for (let k = 0; k < 4; k++) {
-          data.data.push(0);
-        }
-      }
-    }
-  }
-  data.data = Uint8ClampedArray.from(data.data);
+  const decompressedPixelMap = decompressPixelMap(imageData);
+  data.data = Uint8ClampedArray.from(decompressedPixelMap);
   return data;
 }
 
@@ -89,18 +97,34 @@ function fromCompressedStringToArray(string) {
         imageData.push(JSON.parse(numZeros));
         numZeros = "";
       }
-    } else if (data.data[i] === "]") {
+    } else if (string[i] === "]") {
       pixelData += "]";
       imageData.push(JSON.parse(pixelData));
       pixelData = "";
     } else if (pixelData) {
-      pixelData += data.data[i];
+      pixelData += string[i];
     } else {
-      numZeros += data.data[i];
+      numZeros += string[i];
     }
   }
   if (numZeros) {
     imageData.push(JSON.parse(numZeros));
   }
   return imageData;
+}
+
+function decompressPixelMap(compPixelMap) {
+  const expandedPixelMap = [];
+  for (let i in compPixelMap) {
+    if (typeof compPixelMap[i] === "object") {
+      compPixelMap[i].forEach(el => expandedPixelMap.push(el));
+    } else {
+      for (let j = 0; j < compPixelMap[i]; j++) {
+        for (let k = 0; k < 4; k++) {
+          expandedPixelMap.push(0);
+        }
+      }
+    }
+  }
+  return expandedPixelMap;
 }
