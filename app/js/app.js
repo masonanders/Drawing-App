@@ -1,4 +1,5 @@
 import { saveDrawing, loadDrawing } from "./save-load";
+import { beginDraw, executeDraw } from "./draw";
 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
@@ -32,16 +33,4 @@ function resizeCanvas(canvasEl) {
   } catch {
     return false;
   }
-}
-
-function beginDraw(event, ctx) {
-  const { clientX, clientY } = event;
-  ctx.beginPath();
-  ctx.moveTo(clientX, clientY);
-}
-
-function executeDraw(event, ctx) {
-  const { clientX, clientY } = event;
-  ctx.lineTo(clientX, clientY);
-  ctx.stroke();
 }

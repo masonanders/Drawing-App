@@ -96,6 +96,8 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _save_load__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./save-load */ "./app/js/save-load.js");
+/* harmony import */ var _draw__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./draw */ "./app/js/draw.js");
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -109,11 +111,11 @@ document.addEventListener("DOMContentLoaded", () => {
   window.loadDrawing = _save_load__WEBPACK_IMPORTED_MODULE_0__["loadDrawing"];
   document.addEventListener("mousedown", e => {
     mouseIsDown = true;
-    beginDraw(e, ctx);
+    Object(_draw__WEBPACK_IMPORTED_MODULE_1__["beginDraw"])(e, ctx);
   });
 
   document.addEventListener("mousemove", e => {
-    if (mouseIsDown) executeDraw(e, ctx);
+    if (mouseIsDown) Object(_draw__WEBPACK_IMPORTED_MODULE_1__["executeDraw"])(e, ctx);
   });
 
   document.addEventListener("mouseup", () => {
@@ -132,6 +134,20 @@ function resizeCanvas(canvasEl) {
   }
 }
 
+
+/***/ }),
+
+/***/ "./app/js/draw.js":
+/*!************************!*\
+  !*** ./app/js/draw.js ***!
+  \************************/
+/*! exports provided: beginDraw, executeDraw */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "beginDraw", function() { return beginDraw; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "executeDraw", function() { return executeDraw; });
 function beginDraw(event, ctx) {
   const { clientX, clientY } = event;
   ctx.beginPath();
