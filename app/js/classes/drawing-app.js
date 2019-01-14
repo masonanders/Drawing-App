@@ -1,9 +1,11 @@
 import Pen from "./pen";
+import Eraser from "./eraser";
 
 class DrawingApp {
   constructor(ctx) {
     this.mouseIsDown = false;
     this.pen = new Pen();
+    this.eraser = new Eraser();
     this._instantiateListeners(ctx);
   }
 

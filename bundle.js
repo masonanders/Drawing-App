@@ -136,12 +136,15 @@ function resizeCanvas(canvasEl) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pen__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pen */ "./app/js/classes/pen.js");
+/* harmony import */ var _eraser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./eraser */ "./app/js/classes/eraser.js");
+
 
 
 class DrawingApp {
   constructor(ctx) {
     this.mouseIsDown = false;
     this.pen = new _pen__WEBPACK_IMPORTED_MODULE_0__["default"]();
+    this.eraser = new _eraser__WEBPACK_IMPORTED_MODULE_1__["default"]();
     this._instantiateListeners(ctx);
   }
 
@@ -162,6 +165,22 @@ class DrawingApp {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (DrawingApp);
+
+
+/***/ }),
+
+/***/ "./app/js/classes/eraser.js":
+/*!**********************************!*\
+  !*** ./app/js/classes/eraser.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class Eraser {}
+
+/* harmony default export */ __webpack_exports__["default"] = (Eraser);
 
 
 /***/ }),
