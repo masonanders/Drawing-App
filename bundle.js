@@ -145,21 +145,35 @@ class DrawingApp {
     this.mouseIsDown = false;
     this.pen = new _pen__WEBPACK_IMPORTED_MODULE_0__["default"]();
     this.eraser = new _eraser__WEBPACK_IMPORTED_MODULE_1__["default"]();
+    this.eraserOn = false;
     this._instantiateListeners(ctx);
   }
 
   _instantiateListeners(ctx) {
     document.addEventListener("mousedown", e => {
       this.mouseIsDown = true;
-      this.pen.beginDraw(e, ctx);
+      if (this.eraserOn) {
+        this.eraser.activate();
+        this.eraser.executeErase(e, ctx)
+      } else {
+        this.pen.beginDraw(e, ctx);
+      }
     });
 
     document.addEventListener("mousemove", e => {
-      if (this.mouseIsDown) this.pen.executeDraw(e, ctx);
-    });
-
+      if (this.eraserOn) {
+        this.eraser.generateEraser(e);
+      }
+      if (this.mouseIsDown) {
+        this.eraserOn
+          ? this.eraser.executeErase(e, ctx)
+          : this.pen.executeDraw(e, ctx);
+        }
+      });
+      
     document.addEventListener("mouseup", () => {
       this.mouseIsDown = false;
+      if (this.eraserOn) this.eraser.deactivate();
     });
   }
 }
@@ -178,7 +192,31 @@ class DrawingApp {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-class Eraser {}
+class Eraser {
+  constructor() {
+    this.active = false;
+    this.size = 50;
+  }
+
+  generateEraser(e) {
+    console.log("need to generate eraser");
+  }
+
+  executeErase(e, ctx) {
+    const { size } = this;
+    const x = e.clientX - Math.floor(size / 2);
+    const y = e.clientY - Math.floor(size / 2);
+    ctx.clearRect(x, y, size, size);
+  }
+
+  activate() {
+    this.active = true;
+  }
+
+  deactivate() {
+    this.active = false;
+  }
+}
 
 /* harmony default export */ __webpack_exports__["default"] = (Eraser);
 
