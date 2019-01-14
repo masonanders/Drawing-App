@@ -159,7 +159,7 @@ class DrawingApp {
     });
 
     document.addEventListener("mouseup", () => {
-      this.pen.mouseIsDown = false;
+      this.mouseIsDown = false;
     });
   }
 }
