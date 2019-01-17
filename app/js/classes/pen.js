@@ -1,5 +1,6 @@
 class Pen {
   constructor() {
+    this.colors = new Set(["red", "blue", "green"]);
     this.red = 50;
     this.blue = 50;
     this.green = 50;
@@ -20,10 +21,9 @@ class Pen {
   }
 
   changeColor(color, value) {
-    const colors = ["red", "blue", "green"];
     try {
       if (arguments.length < 2) throw "Two arguments required!";
-      if (!colors.includes(color)) throw "Selected color is invalid!";
+      if (!colors[color]) throw "Selected color is invalid!";
       if (value < 0 || value > 255) throw "Given value is invalid!";
       this[color] = value;
     } catch (error) {
