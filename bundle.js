@@ -102,7 +102,10 @@ __webpack_require__.r(__webpack_exports__);
 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
-  console.assert(resizeCanvas(canvas), "Could not resize canvas element!");
+  window.canvas = canvas;
+  const width = 600;
+  const height = 600;
+  resizeCanvas(canvas, width, height);
   const ctx = canvas.getContext("2d");
 
   window.ctx = ctx;
@@ -112,15 +115,11 @@ document.addEventListener("DOMContentLoaded", () => {
   new _classes_drawing_app__WEBPACK_IMPORTED_MODULE_1__["default"](ctx);
 });
 
-function resizeCanvas(canvasEl) {
-  const root = document.getElementById("root");
-  try {
-    canvasEl.width = root.clientWidth;
-    canvasEl.height = root.clientHeight;
-    return true;
-  } catch {
-    return false;
-  }
+function resizeCanvas(canvasEl, width, height) {
+  canvasEl.style.width = width;
+  canvasEl.style.height = height;
+  canvasEl.width = width;
+  canvasEl.height = height;
 }
 
 
@@ -257,7 +256,7 @@ class Pen {
   changeColor(color, value) {
     try {
       if (arguments.length < 2) throw "Two arguments required!";
-      if (!this.colors[color]) throw "Selected color is invalid!";
+      if (!colors[color]) throw "Selected color is invalid!";
       if (value < 0 || value > 255) throw "Given value is invalid!";
       this[color] = value;
     } catch (error) {

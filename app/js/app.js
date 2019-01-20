@@ -3,7 +3,10 @@ import DrawingApp from "./classes/drawing-app";
 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
-  console.assert(resizeCanvas(canvas), "Could not resize canvas element!");
+  window.canvas = canvas;
+  const width = 600;
+  const height = 600;
+  resizeCanvas(canvas, width, height);
   const ctx = canvas.getContext("2d");
 
   window.ctx = ctx;
@@ -13,13 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
   new DrawingApp(ctx);
 });
 
-function resizeCanvas(canvasEl) {
-  const root = document.getElementById("root");
-  try {
-    canvasEl.width = root.clientWidth;
-    canvasEl.height = root.clientHeight;
-    return true;
-  } catch {
-    return false;
-  }
+function resizeCanvas(canvasEl, width, height) {
+  canvasEl.style.width = width;
+  canvasEl.style.height = height;
+  canvasEl.width = width;
+  canvasEl.height = height;
 }
