@@ -15,8 +15,12 @@ class Pen {
   }
 
   executeDraw(event, ctx) {
+    console.log(event);
     const { clientX, clientY } = event;
-    ctx.lineTo(clientX, clientY);
+    const { innerWidth, innerHeight } = window;
+    const offsetX = (innerWidth / 2) + clientX
+    const offsetY = (innerHeight / 2) + clientY
+    ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
   }
 
