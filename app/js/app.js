@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.saveDrawing = saveDrawing;
   window.loadDrawing = loadDrawing;
 
-  new DrawingApp(ctx);
+  new DrawingApp(canvas, ctx);
 });
 
 function resizeCanvas(canvasEl, width, height) {

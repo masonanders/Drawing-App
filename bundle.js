@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.saveDrawing = _utilities_save_load__WEBPACK_IMPORTED_MODULE_0__["saveDrawing"];
   window.loadDrawing = _utilities_save_load__WEBPACK_IMPORTED_MODULE_0__["loadDrawing"];
 
-  new _classes_drawing_app__WEBPACK_IMPORTED_MODULE_1__["default"](ctx);
+  new _classes_drawing_app__WEBPACK_IMPORTED_MODULE_1__["default"](canvas, ctx);
 });
 
 function resizeCanvas(canvasEl, width, height) {
@@ -140,7 +140,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class DrawingApp {
-  constructor(ctx) {
+  constructor(canvas, ctx) {
+    this.canvas = canvas;
     this.mouseIsDown = false;
     this.pen = new _pen__WEBPACK_IMPORTED_MODULE_0__["default"]();
     this.eraser = new _eraser__WEBPACK_IMPORTED_MODULE_1__["default"]();
@@ -149,7 +150,7 @@ class DrawingApp {
   }
 
   _instantiateListeners(ctx) {
-    document.addEventListener("mousedown", e => {
+    this.canvas.addEventListener("mousedown", e => {
       this.mouseIsDown = true;
       if (this.eraserOn) {
         this.eraser.activate();
@@ -159,7 +160,7 @@ class DrawingApp {
       }
     });
 
-    document.addEventListener("mousemove", e => {
+    this.canvas.addEventListener("mousemove", e => {
       if (this.eraserOn) {
         this.eraser.generateEraser(e);
       }
@@ -241,18 +242,14 @@ class Pen {
 
   beginDraw(event, ctx) {
     const { red, blue, green } = this;
-    const { clientX, clientY } = event;
+    const { offsetX, offsetY } = event;
     ctx.strokeStyle = `rgb(${red},${blue},${green})`;
     ctx.beginPath();
-    ctx.moveTo(clientX, clientY);
+    ctx.moveTo(offsetX, offsetY);
   }
 
   executeDraw(event, ctx) {
-    console.log(event);
-    const { clientX, clientY } = event;
-    const { innerWidth, innerHeight } = window;
-    const offsetX = (innerWidth / 2) + clientX
-    const offsetY = (innerHeight / 2) + clientY
+    const { offsetX, offsetY } = event;
     ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
   }

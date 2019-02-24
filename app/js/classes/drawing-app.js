@@ -2,7 +2,8 @@ import Pen from "./pen";
 import Eraser from "./eraser";
 
 class DrawingApp {
-  constructor(ctx) {
+  constructor(canvas, ctx) {
+    this.canvas = canvas;
     this.mouseIsDown = false;
     this.pen = new Pen();
     this.eraser = new Eraser();
@@ -11,7 +12,7 @@ class DrawingApp {
   }
 
   _instantiateListeners(ctx) {
-    document.addEventListener("mousedown", e => {
+    this.canvas.addEventListener("mousedown", e => {
       this.mouseIsDown = true;
       if (this.eraserOn) {
         this.eraser.activate();
@@ -21,7 +22,7 @@ class DrawingApp {
       }
     });
 
-    document.addEventListener("mousemove", e => {
+    this.canvas.addEventListener("mousemove", e => {
       if (this.eraserOn) {
         this.eraser.generateEraser(e);
       }

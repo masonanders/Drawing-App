@@ -8,18 +8,14 @@ class Pen {
 
   beginDraw(event, ctx) {
     const { red, blue, green } = this;
-    const { clientX, clientY } = event;
+    const { offsetX, offsetY } = event;
     ctx.strokeStyle = `rgb(${red},${blue},${green})`;
     ctx.beginPath();
-    ctx.moveTo(clientX, clientY);
+    ctx.moveTo(offsetX, offsetY);
   }
 
   executeDraw(event, ctx) {
-    console.log(event);
-    const { clientX, clientY } = event;
-    const { innerWidth, innerHeight } = window;
-    const offsetX = (innerWidth / 2) + clientX
-    const offsetY = (innerHeight / 2) + clientY
+    const { offsetX, offsetY } = event;
     ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
   }
