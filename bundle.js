@@ -102,17 +102,10 @@ __webpack_require__.r(__webpack_exports__);
 
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("canvas");
-  window.canvas = canvas;
   const width = 600;
   const height = 600;
   resizeCanvas(canvas, width, height);
-  const ctx = canvas.getContext("2d");
-
-  window.ctx = ctx;
-  window.saveDrawing = _utilities_save_load__WEBPACK_IMPORTED_MODULE_0__["saveDrawing"];
-  window.loadDrawing = _utilities_save_load__WEBPACK_IMPORTED_MODULE_0__["loadDrawing"];
-
-  new _classes_drawing_app__WEBPACK_IMPORTED_MODULE_1__["default"](canvas, ctx);
+  new _classes_drawing_app__WEBPACK_IMPORTED_MODULE_1__["default"](canvas);
 });
 
 function resizeCanvas(canvasEl, width, height) {
@@ -140,12 +133,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class DrawingApp {
-  constructor(canvas, ctx) {
+  constructor(canvas) {
     this.canvas = canvas;
-    this.mouseIsDown = false;
     this.pen = new _pen__WEBPACK_IMPORTED_MODULE_0__["default"]();
     this.eraser = new _eraser__WEBPACK_IMPORTED_MODULE_1__["default"]();
+    this.mouseIsDown = false;
     this.eraserOn = false;
+    
+    const ctx = canvas.getContext("2d");
     this._instantiateListeners(ctx);
   }
 

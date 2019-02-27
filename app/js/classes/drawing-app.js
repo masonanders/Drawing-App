@@ -2,12 +2,14 @@ import Pen from "./pen";
 import Eraser from "./eraser";
 
 class DrawingApp {
-  constructor(canvas, ctx) {
+  constructor(canvas) {
     this.canvas = canvas;
-    this.mouseIsDown = false;
     this.pen = new Pen();
     this.eraser = new Eraser();
+    this.mouseIsDown = false;
     this.eraserOn = false;
+    
+    const ctx = canvas.getContext("2d");
     this._instantiateListeners(ctx);
   }
 
