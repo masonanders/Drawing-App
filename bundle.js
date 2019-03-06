@@ -139,7 +139,6 @@ class DrawingApp {
     this.eraser = new _eraser__WEBPACK_IMPORTED_MODULE_1__["default"]();
     this.mouseIsDown = false;
     this.eraserOn = false;
-    this.eraserButton = document.getElementById("eraser");
 
     const ctx = canvas.getContext("2d");
     this._instantiateListeners(ctx);
@@ -175,7 +174,8 @@ class DrawingApp {
   }
 
   _instantiateEraser() {
-    this.eraserButton.onclick = () => (this.eraserOn = !this.eraserOn);
+    const eraserButton = document.getElementById("eraser");
+    eraserButton.onclick = () => (this.eraserOn = !this.eraserOn);
   }
 }
 
