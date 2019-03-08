@@ -15,6 +15,13 @@
   </head>
   <body id="root">
     <canvas id="canvas"></canvas>
-    <button id="eraser" type="button">Eraser</button>
+    <div id="controls">
+      <div id="color-sliders">
+        <input type="range" min="0" max="255" name="red" id="red-slider" />
+        <input type="range" min="0" max="255" name="blue" id="blue-slider" />
+        <input type="range" min="0" max="255" name="green" id="green-slider" />
+      </div>
+      <button id="eraser" type="button">Eraser</button>
+    </div>
   </body>
 </html>

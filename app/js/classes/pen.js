@@ -1,9 +1,10 @@
 class Pen {
-  constructor() {
-    this.colors = new Set(["red", "blue", "green"]);
-    this.red = 50;
-    this.blue = 50;
-    this.green = 50;
+  constructor(red = 50, blue = 50, green = 50) {
+    this.red = red;
+    this.blue = blue;
+    this.green = green;
+
+    this._instantiateListeners();
   }
 
   beginDraw(event, ctx) {
@@ -21,14 +22,21 @@ class Pen {
   }
 
   changeColor(color, value) {
-    try {
-      if (arguments.length < 2) throw "Two arguments required!";
-      if (!colors[color]) throw "Selected color is invalid!";
-      if (value < 0 || value > 255) throw "Given value is invalid!";
-      this[color] = value;
-    } catch (error) {
-      console.error(error);
+    this[color] = value;
+  }
+
+  _instantiateListeners() {
+    const sliders = document.getElementById("color-sliders");
+    for (let slider of sliders.children) {
+      const color = slider.name;
+      slider.value = this[color];
     }
+
+    sliders.onchange = e => {
+      const color = e.target.name;
+      const value = e.target.value;
+      this.changeColor(color, value);
+    };
   }
 }
 
