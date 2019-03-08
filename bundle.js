@@ -272,7 +272,7 @@ class Pen {
       slider.value = this[color];
     }
 
-    sliders.onchange = e => {
+    sliders.oninput = e => {
       const slider = e.target;
       const color = slider.name;
       const value = slider.value;
