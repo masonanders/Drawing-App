@@ -250,7 +250,7 @@ class Pen {
   beginDraw(event, ctx) {
     const { red, blue, green } = this;
     const { offsetX, offsetY } = event;
-    ctx.strokeStyle = `rgb(${red},${blue},${green})`;
+    ctx.strokeStyle = `rgb(${red},${green},${blue})`;
     ctx.beginPath();
     ctx.moveTo(offsetX, offsetY);
   }
