@@ -7,18 +7,15 @@ class DrawingApp {
     this.pen = new Pen();
     this.eraser = new Eraser();
     this.mouseIsDown = false;
-    this.eraserOn = false;
 
     const ctx = canvas.getContext("2d");
     this._instantiateListeners(ctx);
-    this._instantiateEraser();
   }
 
   _instantiateListeners(ctx) {
     this.canvas.addEventListener("mousedown", e => {
       this.mouseIsDown = true;
-      if (this.eraserOn) {
-        this.eraser.activate();
+      if (this.eraser.active) {
         this.eraser.executeErase(e, ctx);
       } else {
         this.pen.beginDraw(e, ctx);
@@ -26,11 +23,11 @@ class DrawingApp {
     });
 
     this.canvas.addEventListener("mousemove", e => {
-      if (this.eraserOn) {
+      if (this.eraser.active) {
         this.eraser.generateEraser(e);
       }
       if (this.mouseIsDown) {
-        this.eraserOn
+        this.eraser.active
           ? this.eraser.executeErase(e, ctx)
           : this.pen.executeDraw(e, ctx);
       }
@@ -38,13 +35,7 @@ class DrawingApp {
 
     document.addEventListener("mouseup", () => {
       this.mouseIsDown = false;
-      if (this.eraserOn) this.eraser.deactivate();
     });
-  }
-
-  _instantiateEraser() {
-    const eraserButton = document.getElementById("eraser");
-    eraserButton.onclick = () => (this.eraserOn = !this.eraserOn);
   }
 }
 

@@ -138,18 +138,15 @@ class DrawingApp {
     this.pen = new _pen__WEBPACK_IMPORTED_MODULE_0__["default"]();
     this.eraser = new _eraser__WEBPACK_IMPORTED_MODULE_1__["default"]();
     this.mouseIsDown = false;
-    this.eraserOn = false;
 
     const ctx = canvas.getContext("2d");
     this._instantiateListeners(ctx);
-    this._instantiateEraser();
   }
 
   _instantiateListeners(ctx) {
     this.canvas.addEventListener("mousedown", e => {
       this.mouseIsDown = true;
-      if (this.eraserOn) {
-        this.eraser.activate();
+      if (this.eraser.active) {
         this.eraser.executeErase(e, ctx);
       } else {
         this.pen.beginDraw(e, ctx);
@@ -157,11 +154,11 @@ class DrawingApp {
     });
 
     this.canvas.addEventListener("mousemove", e => {
-      if (this.eraserOn) {
+      if (this.eraser.active) {
         this.eraser.generateEraser(e);
       }
       if (this.mouseIsDown) {
-        this.eraserOn
+        this.eraser.active
           ? this.eraser.executeErase(e, ctx)
           : this.pen.executeDraw(e, ctx);
       }
@@ -169,13 +166,7 @@ class DrawingApp {
 
     document.addEventListener("mouseup", () => {
       this.mouseIsDown = false;
-      if (this.eraserOn) this.eraser.deactivate();
     });
-  }
-
-  _instantiateEraser() {
-    const eraserButton = document.getElementById("eraser");
-    eraserButton.onclick = () => (this.eraserOn = !this.eraserOn);
   }
 }
 
@@ -197,25 +188,31 @@ class Eraser {
   constructor() {
     this.active = false;
     this.size = 50;
+    this.eraserButton = document.getElementById("eraser");
+    window.eraser = this.eraserButton;
+
+    this._instantiateListener();
   }
 
-  generateEraser(e) {
+  generateEraser(event) {
     console.log("need to generate eraser");
   }
 
-  executeErase(e, ctx) {
+  executeErase(event, ctx) {
     const { size } = this;
-    const x = e.clientX - Math.floor(size / 2);
-    const y = e.clientY - Math.floor(size / 2);
+    const x = event.offsetX - Math.floor(size / 2);
+    const y = event.offsetY - Math.floor(size / 2);
     ctx.clearRect(x, y, size, size);
   }
 
-  activate() {
-    this.active = true;
+  toggle() {
+    this.active = !this.active;
   }
 
-  deactivate() {
-    this.active = false;
+  _instantiateListener() {
+    this.eraserButton.onclick = () => {
+      this.toggle();
+    };
   }
 }
 
