@@ -191,6 +191,7 @@ class Eraser {
     this.eraserButton = document.getElementById("eraser");
     window.eraser = this.eraserButton;
 
+    this.changeColor();
     this._instantiateListener();
   }
 
@@ -207,6 +208,13 @@ class Eraser {
 
   toggle() {
     this.active = !this.active;
+    this.changeColor();
+  }
+
+  changeColor() {
+    this.eraserButton.style.backgroundColor = this.active
+      ? "#2299FF"
+      : "#77CCFF";
   }
 
   _instantiateListener() {
