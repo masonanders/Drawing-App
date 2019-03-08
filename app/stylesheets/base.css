@@ -13,3 +13,22 @@ body {
 canvas {
   border: 1px solid black;
 }
+
+#color-sliders input {
+  -webkit-appearance: none;
+  background: lightgrey;
+  border: 1px solid gray;
+  border-radius: 10px;
+  height: 5px;
+  margin: 15px 2px;
+}
+
+#color-sliders input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 18px;
+  width: 18px;
+  border: 1px solid gray;
+  border-radius: 30px;
+  background: lightgrey;
+}

@@ -33,8 +33,15 @@ class Pen {
     }
 
     sliders.onchange = e => {
-      const color = e.target.name;
-      const value = e.target.value;
+      const slider = e.target;
+      const color = slider.name;
+      const value = slider.value;
+
+      const colors = { red: 0, blue: 0, green: 0 };
+      colors[color] = value;
+      const { red, blue, green } = colors;
+
+      slider.style.background = `rgb(${red}, ${green}, ${blue})`;
       this.changeColor(color, value);
     };
   }
