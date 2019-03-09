@@ -27,10 +27,17 @@ class Pen {
     this[color] = value;
   }
 
+  updatePenSizeSliderBackground() {
+    const penSizeSlider = document.getElementById("pen-size");
+    const { red, blue, green } = this;
+    penSizeSlider.style.background = `rgb(${red}, ${green}, ${blue})`;
+  }
+
   _instantiateListeners() {
     const penSizeSlider = document.getElementById("pen-size");
     const colorSliders = document.getElementById("color-sliders");
 
+    this.updatePenSizeSliderBackground();
     penSizeSlider.value = this.penSize;
     for (let slider of colorSliders.children) {
       const color = slider.name;
@@ -48,6 +55,7 @@ class Pen {
       const value = slider.value;
       sliderValueToBackground(slider);
       this.changeColor(color, value);
+      this.updatePenSizeSliderBackground();
     };
 
     function sliderValueToBackground(slider) {
