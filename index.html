@@ -11,15 +11,23 @@
       media="screen"
       href="app/stylesheets/base.css"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+      href="app/stylesheets/sliders.css"
+    />
     <script src="./bundle.js"></script>
   </head>
   <body id="root">
     <canvas id="canvas"></canvas>
     <div id="controls">
-      <div id="color-sliders">
-        <input type="range" min="0" max="255" name="red" id="red-slider" />
-        <input type="range" min="0" max="255" name="blue" id="blue-slider" />
-        <input type="range" min="0" max="255" name="green" id="green-slider" />
+      <div class="sliders">
+        <div id="color-sliders">
+          <input type="range" min="0" max="255" name="red" />
+          <input type="range" min="0" max="255" name="blue" />
+          <input type="range" min="0" max="255" name="green" />
+        </div>
       </div>
       <button id="eraser" type="button">Eraser</button>
     </div>
