@@ -243,6 +243,7 @@ class Pen {
     this.red = red;
     this.blue = blue;
     this.green = green;
+    this.penSize = 20;
 
     this._instantiateListeners();
   }
@@ -251,6 +252,7 @@ class Pen {
     const { red, blue, green } = this;
     const { offsetX, offsetY } = event;
     ctx.strokeStyle = `rgb(${red},${green},${blue})`;
+    ctx.lineWidth = this.penSize;
     ctx.beginPath();
     ctx.moveTo(offsetX, offsetY);
   }
@@ -266,14 +268,21 @@ class Pen {
   }
 
   _instantiateListeners() {
-    const sliders = document.getElementById("color-sliders");
-    for (let slider of sliders.children) {
+    const penSizeSlider = document.getElementById("pen-size");
+    const colorSliders = document.getElementById("color-sliders");
+
+    penSizeSlider.value = this.penSize;
+    for (let slider of colorSliders.children) {
       const color = slider.name;
       slider.value = this[color];
       sliderValueToBackground(slider);
     }
 
-    sliders.oninput = e => {
+    penSizeSlider.onchange = e => {
+      this.penSize = penSizeSlider.value;
+    };
+
+    colorSliders.oninput = e => {
       const slider = e.target;
       const color = slider.name;
       const value = slider.value;
