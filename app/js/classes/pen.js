@@ -1,5 +1,5 @@
 class Pen {
-  constructor(red = 50, blue = 50, green = 50) {
+  constructor(red = 100, blue = 100, green = 100) {
     this.red = red;
     this.blue = blue;
     this.green = green;
@@ -30,6 +30,12 @@ class Pen {
     for (let slider of sliders.children) {
       const color = slider.name;
       slider.value = this[color];
+
+      const colors = { red: 0, blue: 0, green: 0 };
+      colors[color] = slider.value;
+      const { red, blue, green } = colors;
+
+      slider.style.background = `rgb(${red}, ${green}, ${blue})`;
     }
 
     sliders.oninput = e => {
