@@ -270,26 +270,24 @@ class Pen {
     for (let slider of sliders.children) {
       const color = slider.name;
       slider.value = this[color];
-
-      const colors = { red: 0, blue: 0, green: 0 };
-      colors[color] = slider.value;
-      const { red, blue, green } = colors;
-
-      slider.style.background = `rgb(${red}, ${green}, ${blue})`;
+      sliderValueToBackground(slider);
     }
 
     sliders.oninput = e => {
       const slider = e.target;
       const color = slider.name;
       const value = slider.value;
-
-      const colors = { red: 0, blue: 0, green: 0 };
-      colors[color] = value;
-      const { red, blue, green } = colors;
-
-      slider.style.background = `rgb(${red}, ${green}, ${blue})`;
+      sliderValueToBackground(slider);
       this.changeColor(color, value);
     };
+
+    function sliderValueToBackground(slider) {
+      const colors = { red: 0, blue: 0, green: 0 };
+      const color = slider.name;
+      colors[color] = slider.value;
+      const { red, blue, green } = colors;
+      slider.style.background = `rgb(${red}, ${green}, ${blue})`;
+    }
   }
 }
 
