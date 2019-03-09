@@ -1,3 +1,13 @@
+.sliders {
+  display: flex;
+  flex-direction: column;
+}
+
+#color-sliders {
+  display: flex;
+  flex-direction: column;
+}
+
 .sliders input {
   -webkit-appearance: none;
   background: lightgrey;
